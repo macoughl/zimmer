@@ -666,8 +666,8 @@ class McpOauthServiceTest < ActiveSupport::TestCase
   end
 
   test "manual_completion_required? is false for the hosted callback in production" do
-    with_app_host("zimmer.tadasant.com") do
-      assert_equal "https://zimmer.tadasant.com/mcp_oauth/callback", @service.build_redirect_uri
+    with_app_host("zimmer.transparentmetrics.com") do
+      assert_equal "https://zimmer.transparentmetrics.com/mcp_oauth/callback", @service.build_redirect_uri
       assert_not @service.manual_completion_required?(@service.build_redirect_uri)
       assert @service.manual_completion_required?("http://localhost:3118/callback")
     end

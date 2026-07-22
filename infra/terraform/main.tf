@@ -158,8 +158,8 @@ variable "domain" {
   type        = string
   default     = ""
   description = <<-EOT
-    Optional FQDN for custom-domain HTTPS over the tailnet (staging.zimmer.tadasant.com
-    / zimmer.tadasant.com). When set, cloud-init runs a Caddy TLS terminator on :443
+    Optional FQDN for custom-domain HTTPS over the tailnet (zimmer-staging.transparentmetrics.com
+    / zimmer.transparentmetrics.com). When set, cloud-init runs a Caddy TLS terminator on :443
     that reverse-proxies to kamal-proxy on :80.
 
     Caddy does NOT obtain its own certificate and the droplet holds NO DNS credential:

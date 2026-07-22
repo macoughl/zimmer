@@ -1,7 +1,7 @@
 name: Build base image
 
 # Builds the heavy base image (Node.js, Playwright, gh CLI, gems) from
-# Dockerfile.base and publishes it to ghcr.io/tadasant/zimmer-base:latest.
+# Dockerfile.base and publishes it to ghcr.io/macoughl/zimmer-base:latest.
 # The per-commit "Release image" workflow builds the app FROM this base, so the
 # app build stays fast. Rebuild this when Dockerfile.base, the Ruby version, or
 # heavy system deps change. Manual + monthly to pick up base OS security fixes.
@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build-base:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Log in to GHCR
@@ -33,6 +33,6 @@ jobs:
           context: .
           file: Dockerfile.base
           push: true
-          tags: ghcr.io/tadasant/zimmer-base:latest
+          tags: ghcr.io/macoughl/zimmer-base:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

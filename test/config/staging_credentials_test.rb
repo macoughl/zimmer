@@ -92,7 +92,7 @@ class StagingCredentialsTest < ActiveSupport::TestCase
     clear = YAML.safe_load(ERB.new(DEPLOY_CONFIG.read).result, aliases: true).dig("env", "clear")
 
     %w[AGENT_ORCHESTRATOR_STAGING_BASE_URL ZIMMER_STAGING_BASE_URL].each do |name|
-      assert_equal "https://staging.zimmer.tadasant.com", clear[name],
+      assert_equal "https://zimmer-staging.transparentmetrics.com", clear[name],
         "#{name} must point at Zimmer's own staging host."
     end
 

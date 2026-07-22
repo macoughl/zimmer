@@ -34,7 +34,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: staging
     steps:
       - uses: actions/checkout@v4
@@ -61,7 +61,7 @@ jobs:
           context: .
           file: Dockerfile.base
           push: true
-          tags: ghcr.io/tadasant/zimmer-base:staging
+          tags: ghcr.io/macoughl/zimmer-base:staging
           cache-from: type=gha,scope=base
           cache-to: type=gha,mode=max,scope=base
 
@@ -70,11 +70,11 @@ jobs:
         with:
           context: .
           build-args: |
-            BASE_IMAGE=ghcr.io/tadasant/zimmer-base:staging
+            BASE_IMAGE=ghcr.io/macoughl/zimmer-base:staging
           push: true
           tags: |
-            ghcr.io/tadasant/zimmer:${{ steps.img.outputs.tag }}
-            ghcr.io/tadasant/zimmer:staging-latest
+            ghcr.io/macoughl/zimmer:${{ steps.img.outputs.tag }}
+            ghcr.io/macoughl/zimmer:staging-latest
           cache-from: type=gha,scope=app
           cache-to: type=gha,mode=max,scope=app
 
@@ -432,7 +432,7 @@ jobs:
 
           echo "✅ staging's OTLP ingest was accepted (deployment.environment=staging)"
 
-  # Re-point the `staging.zimmer.tadasant.com` A record at the (possibly new) tailnet
+  # Re-point the `zimmer-staging.transparentmetrics.com` A record at the (possibly new) tailnet
   # IP and push a real cert. Without this, a freshly-provisioned droplet serves only
   # cloud-init's self-signed bootstrap cert and the A record still points at the old
   # box -- and APP_HOST is that domain, so every generated URL and OAuth callback

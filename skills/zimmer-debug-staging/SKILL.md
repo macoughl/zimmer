@@ -24,7 +24,7 @@ treating "no data" as "no problem". Work the signals in order.
 | Signal | Where | Reaches it |
 | --- | --- | --- |
 | Did the deploy work? | `Deploy staging` workflow run | `gh run view` — always available to an agent |
-| Is the app up? | `/up` on the droplet | tailnet only — `staging.zimmer.tadasant.com` resolves to a **tailnet IP** |
+| Is the app up? | `/up` on the droplet | tailnet only — `zimmer-staging.transparentmetrics.com` resolves to a **tailnet IP** |
 | What is it doing? | container stdout | `docker logs` on the droplet (needs SSH) |
 | WARN/ERROR/FATAL history | VictoriaLogs (obs stack) | LogsQL, `deployment.environment:=staging` |
 | Exceptions, grouped | GlitchTip (obs stack) | the `zimmer-staging` project |

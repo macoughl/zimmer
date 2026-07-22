@@ -2,7 +2,7 @@ name: Domain cert (staging)
 
 # Custom-domain HTTPS for the staging droplet, out-of-band (scripts/domain-cert.sh):
 # issues/renews the Let's Encrypt cert via ACME DNS-01 through Cloudflare, upserts
-# the `staging.zimmer.tadasant.com -> tailnet IP` A record, and pushes ONLY the cert
+# the `zimmer-staging.transparentmetrics.com -> tailnet IP` A record, and pushes ONLY the cert
 # onto the box. The Cloudflare token stays in CI — never on the droplet.
 #
 # Runs on a weekly schedule (renew-if-needed; the script no-ops when the cert is
@@ -35,13 +35,13 @@ permissions:
 
 jobs:
   cert:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: staging
     env:
-      DOMAIN: staging.zimmer.tadasant.com
+      DOMAIN: zimmer-staging.transparentmetrics.com
       TS_HOST: zimmer-staging
-      CF_ZONE_ID: "7724dafbdb549223d8f0a9a51f5709da" # tadasant.com
-      ACME_EMAIL: tadas@tadasant.com
+      CF_ZONE_ID: "TODO_SET_AFTER_ZONE_MOVE" # transparentmetrics.com zone id in Mike's Cloudflare account
+      ACME_EMAIL: mike@transparentmetrics.com
       FORCE_ISSUE: ${{ inputs.force_issue && 'true' || 'false' }}
     steps:
       - uses: actions/checkout@v4
@@ -56,13 +56,13 @@ jobs:
           set -euo pipefail
           if [ -z "$CF_API_TOKEN" ]; then
             echo "::error::CLOUDFLARE_API_TOKEN is not set. Mint a token scoped to"
-            echo "::error::Zone:DNS:Edit + Zone:Zone:Read on tadasant.com and add it as"
+            echo "::error::Zone:DNS:Edit + Zone:Zone:Read on transparentmetrics.com and add it as"
             echo "::error::the CLOUDFLARE_API_TOKEN Actions secret. See docs/DOMAIN.md."
             exit 1
           fi
 
       # Join the tailnet as tag:zimmer-ci so we can `tailscale ssh` the droplet and
-      # reach https://staging.zimmer.tadasant.com (which resolves to its tailnet IP).
+      # reach https://zimmer-staging.transparentmetrics.com (which resolves to its tailnet IP).
       - name: Tailscale
         uses: tailscale/github-action@v3
         with:

@@ -2,7 +2,7 @@
 # Non-secret: the Spaces access keys are passed as AWS_ACCESS_KEY_ID /
 # AWS_SECRET_ACCESS_KEY env vars at `terraform init` (GH Actions secrets in CI).
 # Used as: terraform init -backend-config=backend.staging.hcl
-bucket = "zimmer-tfstate"
+bucket = "tm-zimmer-tfstate"
 key    = "staging/terraform.tfstate"
 region = "us-east-1" # Spaces ignores this, but the S3 backend requires a value.
 

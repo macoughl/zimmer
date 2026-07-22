@@ -25,7 +25,7 @@ concurrency:
 jobs:
   lint:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -43,7 +43,7 @@ jobs:
 
   security:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -61,7 +61,7 @@ jobs:
 
   verify_lockfile:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -84,7 +84,7 @@ jobs:
   # co-tenants.
   test-unit:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     services:
       postgres:
@@ -164,7 +164,7 @@ jobs:
   # Claude Code binary + a mock Anthropic server. Deferred — tracked in issue #162.
   test-system:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     services:
       postgres:
@@ -249,7 +249,7 @@ jobs:
   # one Node-only job.
   docs_site:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -268,7 +268,7 @@ jobs:
   # boot required, so it runs fast and independently of the app suite.
   retention_logic:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -299,7 +299,7 @@ jobs:
   #      (This job has no checkout step, so a fork PR never executes fork code here.)
   all-checks-pass:
     if: ${{ !cancelled() }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs:
       - lint
       - security
