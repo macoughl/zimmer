@@ -172,8 +172,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ".ruby-version"
-          bundler-cache: false
-          self-hosted: true
+          bundler-cache: true
 
       # Pin Kamal to the exact version the repo locks (Gemfile.lock) so CI can't drift
       # onto a different 2.x. Installed standalone rather than via `bundle install`,
