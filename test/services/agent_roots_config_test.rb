@@ -48,7 +48,7 @@ class AgentRootsConfigTest < ActiveSupport::TestCase
     router = AgentRootsConfig.find!(Session::ROUTER_AGENT_ROOT)
 
     assert_equal "zimmer-router", router.name
-    assert_equal "https://github.com/tadasant/zimmer.git", router.url
+    assert_equal "https://github.com/macoughl/zimmer.git", router.url
     refute router.user_invocable?, "the router root is dispatched by the quick router, not picked from the new-session form"
   end
 
