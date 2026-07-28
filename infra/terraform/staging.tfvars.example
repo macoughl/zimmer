@@ -58,10 +58,12 @@ ssh_key_fingerprints = [] # DO-registered SSH key fingerprints. Leave EMPTY: thi
 # well is not reconciling the control above -- it just gives the same human the same
 # independent OpenSSH-on-:2222 door into staging, for when the tailnet identity path (:22)
 # is the thing that is broken. A public key is not a secret; forks replace all three.
-# TODO(mike): add Mike's operator/laptop public keys before relying on break-glass SSH.
-# The Kamal deploy key arrives separately via the KAMAL_SSH_PUBKEY Actions secret, so an
-# empty list here still deploys.
-admin_ssh_pubkeys = []
+# Break-glass access: Mike's laptop key, authorized for root over plain OpenSSH,
+# independent of the tailnet. See OPERATIONS.md ("Break-glass SSH") for when and how.
+# The Kamal deploy key arrives separately via the KAMAL_SSH_PUBKEY Actions secret.
+admin_ssh_pubkeys = [
+  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDOFpfXJm/wdL4M0YguHm51Bgku7ASGxLMgHZE2e5KFVdi14404WKj9o0JsAssflseVxtUy4UOu22jdaPZAFU6FqvSBiz/W44p7pGoYUSA/EInAD2F+Eo8uleQ9SbzkQT+Ymur1I7rmEMmHGpb/tfmrck8M4DGX9bk97s4uC+pClMRJbKAN1NiLIin2ETOVGMnNSPBPLg7OjgHqBkR99B4Fh4kjFuHDzvUciwYdidRwtcDo8c1FdO8sAwCKnYijN99mQTTy6VpMVY5UuM8yUKWEhcmGbKWioCaOw15ucI+kRwCvyXB4F9EZBIwupGa1f3p8VM/YXgBWKIWVY3K/x5BZGyNgrif6Pd31ymcGtgtaQDyGdwVnANuf/tIWBMwNeKl30kB8ZX3D+Tski9UTSP7hqK91rPPJ2I76NDZPL1bIX+6r+bXwtSIjpMECwSKhTP2S+fp2491lNrDrHuiUYuezHFhHS6wpEdkPKVDerb+QGctw7H7bptdQ3gQqrs1tkWc= macoughl@Mike-SLS",
+]
 
 # Custom-domain HTTPS over the tailnet: turns on the Caddy TLS terminator on :443,
 # fronting kamal-proxy. The cert and the `domain -> tailnet IP` A record are managed
