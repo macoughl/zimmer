@@ -8,7 +8,7 @@ plain terms. Upstream's full docs live at
 
 ## The stack, in one paragraph
 
-A single DigitalOcean droplet (in the "Hermes" team) runs the Rails app and its worker
+A single DigitalOcean droplet runs the Rails app and its worker
 as Docker containers, deployed by Kamal from GitHub Actions. Terraform creates and
 manages the droplet itself. The droplet is reachable only over a Tailscale private
 network; it has no public web exposure. DNS and TLS certificates for the custom domain
@@ -31,8 +31,7 @@ Zimmer has no login screen. Anyone who can reach the web UI can read the operato
 Anthropic and GitHub tokens in plaintext and can spawn agent sessions that hold real
 production credentials. The security model, by upstream design, is: the app is only
 reachable over a private network. Tailscale is that private network, an encrypted
-peer-to-peer mesh limited to devices enrolled in this tailnet
-(mike@transparentmetrics.com).
+peer-to-peer mesh limited to devices enrolled in the operator's tailnet.
 
 The alternatives are all worse: exposing the app publicly means bolting an auth system
 onto upstream (a permanent fork and a permanent security burden); firewall IP
@@ -41,9 +40,6 @@ the same idea as Tailscale with more maintenance. Tailscale has no server compon
 maintain and the free tier covers this use. Never expose the droplet's web port
 publicly.
 
-Tailnet identity: the tailnet belongs to the Transparent-Metrics GitHub organization,
-logged in via GitHub SSO as macoughl (Tailscale requires an identity provider, not an
-email signup). Membership therefore follows TM org membership on GitHub.
 
 ## Break-glass SSH (the `admin_ssh_pubkeys` list)
 
@@ -67,21 +63,18 @@ Actions.
 
 | Secret | What it is | Source |
 |---|---|---|
-| DIGITALOCEAN_ACCESS_TOKEN | Terraform's key to create/manage droplets | DO "Hermes" team -> API |
+| DIGITALOCEAN_ACCESS_TOKEN | Terraform's key to create/manage droplets | DigitalOcean API token |
 | SPACES_ACCESS_KEY_ID / SPACES_SECRET_ACCESS_KEY | Access to the tfstate bucket | DO Spaces keys |
-| CLOUDFLARE_API_TOKEN | DNS edit rights on the transparentmetrics.com zone only | Cloudflare TM account |
+| CLOUDFLARE_API_TOKEN | DNS edit rights on the transparentmetrics.com zone only | Cloudflare API token (zone-scoped) |
 | TAILSCALE_AUTH_KEY | Lets the new droplet join the tailnet | Tailscale admin console |
 | TS_CI_AUTHKEY | Lets a CI job join the tailnet briefly to deploy | Tailscale admin console |
 | TS_API_CLIENT_ID / TS_API_CLIENT_SECRET | Lets the deploy workflow clean up stale CI devices | Tailscale OAuth client |
 | KAMAL_SSH_PUBKEY / KAMAL_SSH_KEY | Deploy keypair Kamal uses to SSH to the droplet | Generated locally |
-| GHCR_PULL_TOKEN | Read-only token the droplet uses to pull images | GitHub (macoughl) PAT, scope read:packages |
+| GHCR_PULL_TOKEN | Read-only token the droplet uses to pull images | GitHub PAT, scope read:packages |
 | STAGING_SECRET_BASE / STAGING_API_KEYS / STAGING_DB_PASSWORD / STAGING_RAILS_MASTER_KEY | App secrets (Rails session signing, REST/MCP API keys, DB password, credentials key) | Generated locally |
 
-Account worlds: DigitalOcean, Cloudflare, and Tailscale belong to the Transparent
-Metrics world (mike@transparentmetrics.com). GitHub is the personal `macoughl` account,
-which owns this fork and is the identity the instance's sessions use. PulseMCP-world
-credentials (the ClawdBot Slack token, per-MCP-server credentials) enter later as app
-runtime secrets, never as deploy secrets.
+Which accounts and organizations own which pieces (and why) is deliberately documented
+in the operator's private notes, not in this public file.
 
 ## Routine operations
 
