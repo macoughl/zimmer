@@ -41,6 +41,10 @@ the same idea as Tailscale with more maintenance. Tailscale has no server compon
 maintain and the free tier covers this use. Never expose the droplet's web port
 publicly.
 
+Tailnet identity: the tailnet belongs to the Transparent-Metrics GitHub organization,
+logged in via GitHub SSO as macoughl (Tailscale requires an identity provider, not an
+email signup). Membership therefore follows TM org membership on GitHub.
+
 ## Break-glass SSH (the `admin_ssh_pubkeys` list)
 
 Everyday SSH to the droplet uses Tailscale SSH (port 22 on the tailnet), where
