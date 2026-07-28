@@ -40,7 +40,7 @@ jobs:
     env:
       DOMAIN: zimmer-staging.transparentmetrics.com
       TS_HOST: zimmer-staging
-      CF_ZONE_ID: "TODO_SET_AFTER_ZONE_MOVE" # transparentmetrics.com zone id in Mike's Cloudflare account
+      CF_ZONE_ID: "4656043f0ae149e0e933865c04c64066" # transparentmetrics.com
       ACME_EMAIL: mike@transparentmetrics.com
       FORCE_ISSUE: ${{ inputs.force_issue && 'true' || 'false' }}
     steps:
