@@ -7,7 +7,7 @@ key    = "staging/terraform.tfstate"
 region = "us-east-1" # Spaces ignores this, but the S3 backend requires a value.
 
 endpoints = {
-  s3 = "https://nyc3.digitaloceanspaces.com"
+  s3 = "https://sfo3.digitaloceanspaces.com"
 }
 
 # DO Spaces is S3-compatible but not AWS: skip the AWS-specific preflight calls,
