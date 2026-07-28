@@ -43,16 +43,18 @@ publicly.
 
 ## Break-glass SSH (the `admin_ssh_pubkeys` list)
 
-Everyday access (web UI, SSH, deploys) travels over Tailscale. If Tailscale itself is
-ever the thing that is broken, there is one independent recovery door: a plain OpenSSH
-listener on the droplet that accepts the public keys listed in
-`infra/terraform/staging.tfvars.example` under `admin_ssh_pubkeys`, as root.
+Everyday SSH to the droplet uses Tailscale SSH (port 22 on the tailnet), where
+Tailscale's identity layer decides who gets in. The break-glass door is a second, plain
+OpenSSH listener on port 2222, also tailnet-only, that instead accepts the public keys
+listed in `infra/terraform/staging.tfvars.example` under `admin_ssh_pubkeys`, as root.
+It exists for when Tailscale's identity/auth layer is the thing that is broken while the
+network still works: `ssh -p 2222 root@<droplet tailnet IP>`.
 
-Mike's laptop key (`~/.ssh/id_rsa` on Mike-SLS) is authorized there. That means: if the
-tailnet path fails, `ssh root@<droplet public IP> -p 2222` from that laptop still works.
-Public keys are safe to publish (they are the lock, not the key); the private half never
-leaves the laptop. If the laptop or key is ever lost, remove the entry from tfvars and
-redeploy with `recreate_droplet` to revoke it.
+Mike's laptop key (`~/.ssh/id_rsa` on Mike-SLS) is authorized there. Public keys are
+safe to publish (they are the lock, not the key). If the laptop or key is ever lost,
+remove the entry and redeploy with `recreate_droplet` to revoke it. If the entire
+tailnet is unreachable, the true last resort is DigitalOcean's web recovery console
+(droplet page -> Access -> Launch Recovery Console).
 
 ## Secrets inventory (GitHub Actions secrets on this repo)
 
