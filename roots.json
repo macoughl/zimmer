@@ -4,7 +4,7 @@
     "name": "zimmer",
     "display_name": "Zimmer",
     "description": "The Zimmer orchestrator itself — self-hostable AI coding agent orchestration.",
-    "url": "https://github.com/tadasant/zimmer.git",
+    "url": "https://github.com/macoughl/zimmer.git",
     "default_branch": "main",
     "user_invocable": true,
     "default_goal": "open-reviewed-green-pr"
@@ -13,7 +13,7 @@
     "name": "zimmer-router",
     "display_name": "Zimmer Router",
     "description": "Baseline root for the dashboard's quick router: freeform input submitted there starts its session here. Not user-invocable — the quick router dispatches it, rather than it being picked from the new-session form.",
-    "url": "https://github.com/tadasant/zimmer.git",
+    "url": "https://github.com/macoughl/zimmer.git",
     "default_branch": "main",
     "user_invocable": false
   },
@@ -101,7 +101,7 @@
     "name": "general-agent",
     "display_name": "General Agent",
     "description": "Generic catch-all root for ad-hoc coding tasks with no dedicated root.",
-    "url": "https://github.com/tadasant/zimmer.git",
+    "url": "https://github.com/macoughl/zimmer.git",
     "default_branch": "main",
     "user_invocable": true
   }

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# GHCR retention selector for ghcr.io/tadasant/zimmer.
+# GHCR retention selector for ghcr.io/macoughl/zimmer.
 #
 # Keeps at most RETENTION_LIMIT (default 50) container versions, choosing which
 # to KEEP with this priority order (higher tiers are protected first, so when the

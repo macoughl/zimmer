@@ -58,16 +58,15 @@ ssh_key_fingerprints = [] # DO-registered SSH key fingerprints. Leave EMPTY: thi
 # well is not reconciling the control above -- it just gives the same human the same
 # independent OpenSSH-on-:2222 door into staging, for when the tailnet identity path (:22)
 # is the thing that is broken. A public key is not a secret; forks replace all three.
-admin_ssh_pubkeys = [
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEp3tk5RCh76zPddFcoyY01MazsyHnacqo0KrAczCY6 zimmer-production-operator",
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEmRanTTxADIQWHp9PZqOAFQX2SVXibTqVXb0D3AtuiU agent-orchestrator-prod-hetzner",
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINtfKYBq3IWBflQJ8lXNhfgJAmS6RynvC2A1m0eFy3Zn root@local",
-]
+# TODO(mike): add Mike's operator/laptop public keys before relying on break-glass SSH.
+# The Kamal deploy key arrives separately via the KAMAL_SSH_PUBKEY Actions secret, so an
+# empty list here still deploys.
+admin_ssh_pubkeys = []
 
 # Custom-domain HTTPS over the tailnet: turns on the Caddy TLS terminator on :443,
 # fronting kamal-proxy. The cert and the `domain -> tailnet IP` A record are managed
 # by the `domain-cert-staging` workflow (ACME DNS-01 via Cloudflare), NOT Terraform.
-domain = "staging.zimmer.tadasant.com"
+domain = "zimmer-staging.transparentmetrics.com"
 
 # Staging runs its own throwaway Postgres accessory via Kamal, so no managed cluster.
 # Production sets this to a Managed Postgres cluster name so the DB survives rebuilds.

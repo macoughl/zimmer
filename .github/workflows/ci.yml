@@ -1,17 +1,9 @@
 name: CI
 
-# Standalone CI for the Zimmer Rails app. Runs on a shared self-hosted GitHub Actions
-# runner pool (label `self-hosted`) that this repo registers against to stay off the
-# GitHub-hosted Actions minute quota. Postgres + Redis come up as service containers on
-# *dynamic* host ports so concurrent jobs on the shared box never collide; gems install
-# into a per-runner path for the same reason. If you fork Zimmer, point these at your own
-# runners (or switch the jobs back to `ubuntu-latest`).
-#
-# ruby/setup-ruby runs with `self-hosted: true`: it selects the Ruby already staged in
-# each runner's own $RUNNER_TOOL_CACHE rather than trying to download+extract into the
-# hardcoded /opt/hostedtoolcache, which the runner user can't write. The CI runners were
-# registered with a Node toolcache but no Ruby one, so their Ruby 3.4.6 toolcache was
-# seeded out of band; that manual seed is not yet in IaC — see issue #118 to codify it.
+# Standalone CI for the Zimmer Rails app. This fork runs on GitHub-hosted runners
+# (ubuntu-latest); as a public repo the hosted minutes are free. Postgres + Redis come
+# up as service containers on dynamic host ports. ruby/setup-ruby installs Ruby itself
+# on hosted runners (no `self-hosted: true` input, no pre-seeded toolcache needed).
 on:
   pull_request:
     branches: [main]
@@ -25,14 +17,13 @@ concurrency:
 jobs:
   lint:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4.6"
-          bundler-cache: false
-          self-hosted: true
+          bundler-cache: true
       - name: Install gems (per-runner path)
         run: |
           RUNNER_NUM=$(echo "$RUNNER_NAME" | grep -oE '[0-9]+$' || echo "0")
@@ -43,14 +34,13 @@ jobs:
 
   security:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4.6"
-          bundler-cache: false
-          self-hosted: true
+          bundler-cache: true
       - name: Install gems (per-runner path)
         run: |
           RUNNER_NUM=$(echo "$RUNNER_NAME" | grep -oE '[0-9]+$' || echo "0")
@@ -61,14 +51,13 @@ jobs:
 
   verify_lockfile:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4.6"
-          bundler-cache: false
-          self-hosted: true
+          bundler-cache: true
       - name: Ensure Gemfile.lock is up to date
         run: |
           RUNNER_NUM=$(echo "$RUNNER_NAME" | grep -oE '[0-9]+$' || echo "0")
@@ -84,7 +73,7 @@ jobs:
   # co-tenants.
   test-unit:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     services:
       postgres:
@@ -132,8 +121,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4.6"
-          bundler-cache: false
-          self-hosted: true
+          bundler-cache: true
       - name: Install gems (per-runner path)
         run: |
           RUNNER_NUM=$(echo "$RUNNER_NAME" | grep -oE '[0-9]+$' || echo "0")
@@ -164,7 +152,7 @@ jobs:
   # Claude Code binary + a mock Anthropic server. Deferred — tracked in issue #162.
   test-system:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     services:
       postgres:
@@ -212,8 +200,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4.6"
-          bundler-cache: false
-          self-hosted: true
+          bundler-cache: true
       - name: Install gems (per-runner path)
         run: |
           RUNNER_NUM=$(echo "$RUNNER_NAME" | grep -oE '[0-9]+$' || echo "0")
@@ -249,7 +236,7 @@ jobs:
   # one Node-only job.
   docs_site:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -268,13 +255,12 @@ jobs:
   # boot required, so it runs fast and independently of the app suite.
   retention_logic:
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4.6"
-          self-hosted: true
       - name: Test GHCR retention selection logic
         run: ruby scripts/ghcr_retention_test.rb
 
@@ -299,7 +285,7 @@ jobs:
   #      (This job has no checkout step, so a fork PR never executes fork code here.)
   all-checks-pass:
     if: ${{ !cancelled() }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs:
       - lint
       - security

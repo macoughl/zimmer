@@ -16,7 +16,7 @@
 # the one zone.
 #
 # Required env:
-#   DOMAIN         e.g. zimmer.tadasant.com
+#   DOMAIN         e.g. zimmer.transparentmetrics.com
 #   TS_HOST        tailnet hostname to reach the droplet over `tailscale ssh`
 #                  (production: zimmer; staging: zimmer-staging)
 #   CF_ZONE_ID     Cloudflare zone id for the parent zone

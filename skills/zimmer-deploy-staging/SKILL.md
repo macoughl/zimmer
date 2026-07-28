@@ -28,7 +28,7 @@ health-gated zero-downtime cutover, it does **not** rebuild the droplet.
   ("Branch/tag/SHA to build & deploy"), falling back to `github.ref`.
 - **There is NO production deploy workflow in this repo.** Production lives in a
   private companion repo and auto-upgrades to the newest
-  `ghcr.io/tadasant/zimmer` image. `release-image.yml` (on push to `main`) builds
+  `ghcr.io/macoughl/zimmer` image. `release-image.yml` (on push to `main`) builds
   and publishes that image and fires a `repository_dispatch`
   (`zimmer-image-published`) to notify it. Do not go looking for a prod deploy
   here, and do not try to deploy prod from this repo.
@@ -41,7 +41,7 @@ health-gated zero-downtime cutover, it does **not** rebuild the droplet.
   `ignore_changes = [user_data]`, so changing cloud-init, the Caddyfile, or the
   Kamal deploy key needs `-replace`. Normal app deploys must leave it off.
 - **Staging has a domain, but it is still not public.**
-  `staging.zimmer.tadasant.com` gets a real cert (Caddy terminates TLS on :443 in
+  `zimmer-staging.transparentmetrics.com` gets a real cert (Caddy terminates TLS on :443 in
   front of kamal-proxy; the A record and cert are managed by
   `domain-cert-staging.yml`, not Terraform) — but that A record points at the
   droplet's **tailnet IP**, and the DigitalOcean firewall opens no public TCP port
@@ -70,7 +70,7 @@ gh run watch "$(gh run list --workflow=deploy-staging.yml --limit 1 --json datab
 ```
 
 What the run does, in order: builds and pushes
-`ghcr.io/tadasant/zimmer-base:staging` and `ghcr.io/tadasant/zimmer:staging-<short-sha>`
+`ghcr.io/macoughl/zimmer-base:staging` and `ghcr.io/macoughl/zimmer:staging-<short-sha>`
 (+ `:staging-latest`) → `terraform apply` against **remote state** (DigitalOcean
 Spaces, `backend.staging.hcl`), which reconciles the existing droplet in place →
 joins the tailnet and resolves `zimmer-staging`'s IP → prints an **observability
@@ -86,7 +86,7 @@ Both of these require you to be **on the tailnet** — the domain's A record poi
 a tailnet IP:
 
 ```bash
-curl -sf https://staging.zimmer.tadasant.com/up && echo "STAGING UP"
+curl -sf https://zimmer-staging.transparentmetrics.com/up && echo "STAGING UP"
 curl -sf http://zimmer-staging/up && echo "STAGING UP"
 ```
 

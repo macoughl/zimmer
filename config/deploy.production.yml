@@ -51,7 +51,7 @@ ssh:
 env:
   clear:
     RAILS_ENV: production
-    APP_HOST: zimmer.tadasant.com
+    APP_HOST: zimmer.transparentmetrics.com
     # Read the catalog from the mounted production catalog (delivered by
     # artifacts-sync-prod). production.rb falls back to the in-image catalog when this
     # file is not present yet (fresh box, before the first sync).
@@ -59,8 +59,8 @@ env:
     # Point the injected self-session MCP server at THIS instance. Both names carry
     # the same value through the AGENT_ORCHESTRATOR_* -> ZIMMER_* rename; the reader
     # (SelfSessionInjector#self_target) now reads the ZIMMER_ name.
-    AGENT_ORCHESTRATOR_PROD_BASE_URL: https://zimmer.tadasant.com
-    ZIMMER_PROD_BASE_URL: https://zimmer.tadasant.com
+    AGENT_ORCHESTRATOR_PROD_BASE_URL: https://zimmer.transparentmetrics.com
+    ZIMMER_PROD_BASE_URL: https://zimmer.transparentmetrics.com
     # Managed Postgres (off-droplet), reached over the private VPC. Host/port are
     # injected from `terraform output`; TLS is mandatory for Managed Postgres.
     DATABASE_HOST: <%= ENV["PRODUCTION_DB_HOST"] %>

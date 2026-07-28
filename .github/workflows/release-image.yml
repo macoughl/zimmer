@@ -59,7 +59,7 @@ jobs:
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
 
-      # The app image builds FROM ghcr.io/tadasant/zimmer-base:latest. Bootstrap it
+      # The app image builds FROM ghcr.io/macoughl/zimmer-base:latest. Bootstrap it
       # if it does not exist yet, so the first release (and any release before the
       # "Build base image" workflow has ever run) does not fail with
       # "zimmer-base:latest: not found". Once present it is reused; rebuild it via
@@ -68,7 +68,7 @@ jobs:
         id: base
         run: |
           set -euo pipefail
-          if docker buildx imagetools inspect ghcr.io/tadasant/zimmer-base:latest >/dev/null 2>&1; then
+          if docker buildx imagetools inspect ghcr.io/macoughl/zimmer-base:latest >/dev/null 2>&1; then
             echo "need_base=false" >> "$GITHUB_OUTPUT"
             echo "Base image present; reusing it."
           else
@@ -83,7 +83,7 @@ jobs:
           context: .
           file: Dockerfile.base
           push: true
-          tags: ghcr.io/tadasant/zimmer-base:latest
+          tags: ghcr.io/macoughl/zimmer-base:latest
           cache-from: type=gha,scope=base
           cache-to: type=gha,mode=max,scope=base
 
@@ -93,12 +93,12 @@ jobs:
           context: .
           # Uses the Zimmer base image (Node/Playwright/gh/gems), ensured to exist by
           # the bootstrap step above. The Dockerfile defaults BASE_IMAGE to
-          # ghcr.io/tadasant/zimmer-base:latest.
+          # ghcr.io/macoughl/zimmer-base:latest.
           push: true
           tags: |
-            ghcr.io/tadasant/zimmer:${{ steps.version.outputs.version }}
-            ghcr.io/tadasant/zimmer:latest
-            ghcr.io/tadasant/zimmer:sha-${{ github.sha }}
+            ghcr.io/macoughl/zimmer:${{ steps.version.outputs.version }}
+            ghcr.io/macoughl/zimmer:latest
+            ghcr.io/macoughl/zimmer:sha-${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

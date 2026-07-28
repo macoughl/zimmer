@@ -12,7 +12,7 @@
 # To (re)build the base image, run the "Build base image" workflow
 # (.github/workflows/build-base-image.yml), which publishes zimmer-base from
 # Dockerfile.base. It must be published once before the first app image build.
-ARG BASE_IMAGE=ghcr.io/tadasant/zimmer-base:latest
+ARG BASE_IMAGE=ghcr.io/macoughl/zimmer-base:latest
 FROM ${BASE_IMAGE} AS base
 
 # Set production environment (inherited from base but explicitly set for clarity)

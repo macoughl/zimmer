@@ -1,6 +1,6 @@
 name: GHCR retention
 
-# Prunes old ghcr.io/tadasant/zimmer image versions to at most 50, using the
+# Prunes old ghcr.io/macoughl/zimmer image versions to at most 50, using the
 # tiered keep-priority implemented and unit-tested in scripts/ghcr_retention.rb.
 # Runs weekly and on demand. Dry-run by default on manual runs so you can see
 # what it would delete before letting it prune.
@@ -26,7 +26,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4.6"
-          self-hosted: true
       - name: Prune old image versions
         env:
           # Default GITHUB_TOKEN can delete versions of packages owned by the
