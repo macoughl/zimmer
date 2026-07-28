@@ -88,3 +88,7 @@ vendor/bundle/
 *.tfstate.*
 *.tfvars
 !*.tfvars.example
+
+# Ignore key files for decrypting credentials and more.
+/config/credentials/*.key
+
